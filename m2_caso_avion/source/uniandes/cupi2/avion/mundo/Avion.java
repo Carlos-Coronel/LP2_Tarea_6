@@ -334,8 +334,7 @@ public class Avion
     public boolean hayNumSillasEconomicasLibresPasilloVentana(int nSillas)
     
     {
-    	int sillasDesocupadas = contarSillasEconomicasDesocupadasPasillo() + contarSillasEconomicasDesocupadasVentana();
-    	if(sillasDesocupadas >= nSillas){
+    	if(contarSillasEconomicasDesocupadasPasillo() >= nSillas || contarSillasEconomicasDesocupadasVentana() >= nSillas){
     		return true;  
     	}else {
     		return false;
@@ -373,16 +372,16 @@ public class Avion
     public ArrayList<Silla> darSillasVacias()
     {
     	ArrayList<Silla> sillasVacias = new ArrayList<Silla>();
+    	for( int i = 0; i < SILLAS_EJECUTIVAS; i++ ) {
+   		 	if(sillasEjecutivas[i].sillaAsignada() == false) {
+   		 		sillasVacias.add(sillasEjecutivas[i]);   
+   		 	}
+   	 	}
     	 for( int i = 0; i < SILLAS_ECONOMICAS ; i++ ) {
              if( sillasEconomicas[ i ].sillaAsignada( ) == false ) {
             	 sillasVacias.add(sillasEconomicas[i]);   
              }
          }
-    	 for( int i = 0; i < SILLAS_EJECUTIVAS; i++ ) {
-    		 if(sillasEjecutivas[i].sillaAsignada() == false) {
-        		 sillasVacias.add(sillasEjecutivas[i]);   
-        	 }
-    	 }
     	return sillasVacias;
     }
     /**
@@ -439,21 +438,21 @@ public class Avion
     public double darPorcentajeSillasEconomicasOcupadasPares()
     {
     	  double porcentaje;
-          int totalSillas = 0;
-          int sillasOcupadas = 0;
+          int totalSillasPares = 0;
+          int sillasOcupadasPares = 0;
           for( int i = 0; i < SILLAS_ECONOMICAS; i++ )
           {
               if( sillasEconomicas[ i ].sillaAsignada( ) && i % 2 != 0  )
               {
-            	  sillasOcupadas++;
-            	  totalSillas++;
+            	  sillasOcupadasPares++;
+            	  totalSillasPares++;
               }else {
             	  if( i % 2 != 0) {
-            		  totalSillas++;
+            		  totalSillasPares++;
             	  }
               }
           }
-          porcentaje = ( double )sillasOcupadas / totalSillas * 100;
+          porcentaje = ( double )sillasOcupadasPares / totalSillasPares * 100;
           return porcentaje;
     }
 

@@ -14,6 +14,7 @@ package uniandes.cupi2.avion.interfaz;
 
 import java.awt.*;
 import java.text.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -180,8 +181,96 @@ public class InterfazAvion extends JFrame
      */
     public void reqFuncOpcion1( )
     {
-        String respuesta = avion.metodo1( );
-        JOptionPane.showMessageDialog( this, respuesta, "Respuesta", JOptionPane.INFORMATION_MESSAGE );
+    	try { 
+    		Object[] possibilities1 = {"Verificar sillas economicas disponibles en el pasillo o en la ventana","Buscar silla economica libre", "Mostrar sillas vacias", "Total sillas ocupadas","Buscar dos sillas vacias con misma ubicacion", "Porcentaje de ocupacion de sillas economicas pares"};
+    		String Opcion =( String )JOptionPane.showInputDialog( this, "Elija una opcion",null, JOptionPane.QUESTION_MESSAGE, null, possibilities1, "Sillas económicas libres ventana"); 
+	       
+    		if(Opcion.equals("Verificar sillas economicas disponibles en el pasillo o en la ventana")) {
+    			int sillas = Integer.parseInt(JOptionPane.showInputDialog( this, "Ingrese el numero de sillas "));
+			    boolean respuesta;
+			    respuesta = avion.hayNumSillasEconomicasLibresPasilloVentana(sillas);
+			    if(respuesta == true ) {
+			    	if(avion.contarSillasEconomicasDesocupadasPasillo() >= sillas) {
+			    		JOptionPane.showMessageDialog(this,"Si hay "+sillas+" sillas disponibles en el pasillo","Respuesta",JOptionPane.INFORMATION_MESSAGE );	
+			    	}
+			    	if(avion.contarSillasEconomicasDesocupadasVentana()>= sillas) {
+			    		JOptionPane.showMessageDialog(null, "Si hay "+sillas+" sillas disponibles  en la ventana ","Respuesta",JOptionPane.INFORMATION_MESSAGE );
+			    	}
+			    		
+			    }else {
+			    	JOptionPane.showMessageDialog(this,"No hay "+sillas+" sillas disponibles en el pasillo o en la ventana","Respuesta",JOptionPane.INFORMATION_MESSAGE );
+			    }
+			   
+    		}else {
+    			if(Opcion.equals("Buscar silla economica libre")) {
+		    		Silla s;
+			        int ubicacion = Integer.parseInt(JOptionPane.showInputDialog( this, "Ingrese un numero segun la ubicacion(1.Ventana 2.Centro 3.Pasillo)"));
+			        if(ubicacion <= 3 && ubicacion > 0 ) {
+			        	s= avion.buscarSillaEconomicaLibreReves(ubicacion);
+			        	JOptionPane.showMessageDialog( this," Clase: "+s.darClase()+"\n Ubicacion: "+s.darUbicacion()+"\n Numero: "+s.darNumero(), "Silla del avión", JOptionPane.INFORMATION_MESSAGE );
+			        }else {
+			        	JOptionPane.showMessageDialog(null, "Error ubicacion no existente");
+			        }
+		    	}else {
+		    		if(Opcion.equals("Mostrar sillas vacias")) {
+				       	ArrayList<Silla> sillasVacias = new ArrayList<Silla>();
+				      	sillasVacias = avion.darSillasVacias();
+				        int cont=0;
+				        if(!sillasVacias.isEmpty()) {
+				        	int cantidad = Integer.parseInt(JOptionPane.showInputDialog( this, "Ingrese el la cantidad de sillas vacias a buscar"));
+				        	if(cantidad <= 50 && cantidad > 0) {
+				        		cantidad = cantidad-1;
+				        		for(int i = 0; i<sillasVacias.size() && i <= cantidad;i++) {
+				        			cont++;
+						        }
+				        		if(cantidad == cont-1) {
+				        			for(int i = 0; i<sillasVacias.size() && i <= cantidad;i++) {
+				        				JOptionPane.showMessageDialog( this, "Las de sillas vacias disponibles son " +"\n Clase: "+sillasVacias.get(i).darClase()+"\n Ubicacion: "+sillasVacias.get(i).darUbicacion()+"\n Numero: "+sillasVacias.get(i).darNumero(), "Sillas disponibles del avión", JOptionPane.INFORMATION_MESSAGE );
+				        			}
+				        		}else {
+				        			JOptionPane.showMessageDialog(null, "Solo existen "+cont+" sillas disponibles");
+				        		}
+						        		
+				        	}else {
+				        		JOptionPane.showMessageDialog(null, "Error la cantidad ingresada no es valida");
+				        	}
+				  
+				        }else {
+				        	JOptionPane.showMessageDialog(null, "No existe sillas disponibles");
+				        }
+			        			
+				    }else {
+				    	if(Opcion.equals("Total sillas ocupadas")) {
+					        int total;
+					        total = avion.darNumTotalSillasOcupadas();
+					        JOptionPane.showMessageDialog( this, "El total de sillas ocupadas es " +  total, "Ocupación de sillas del avión", JOptionPane.INFORMATION_MESSAGE );
+					      
+				    	}else {
+				    		if(Opcion.equals("Buscar dos sillas vacias con misma ubicacion")) {
+						  		boolean respuesta;
+						        respuesta = avion.hayDosSillasVaciasMismaUbicacion();
+						        if(respuesta == true ) {
+						        	JOptionPane.showMessageDialog(this,"Si hay sillas disponibles en la misma ubicacion","Respuesta",JOptionPane.INFORMATION_MESSAGE );
+						        }else {
+						        	JOptionPane.showMessageDialog(this,"No hay sillas disponibles en la misma ubicacion","Respuesta",JOptionPane.INFORMATION_MESSAGE );
+					        	}
+					           
+				    		}else {
+				    			if(Opcion.equals("Porcentaje de ocupacion de sillas economicas pares")) {
+				    				double porcentaje;
+						            porcentaje = avion.darPorcentajeSillasEconomicasOcupadasPares();
+						            JOptionPane.showMessageDialog( this, "El porcentaje de ocupación de sillas economicas pares es " +  porcentaje  + "%", "Ocupación del avión en la clase economica", JOptionPane.INFORMATION_MESSAGE );
+							        
+				    			}
+				    		}
+				    	}
+				    }
+		    	}
+    		}
+    		
+    	}catch( NumberFormatException e ){
+    		JOptionPane.showMessageDialog( this, "Error al cargar datos", "Error", JOptionPane.ERROR_MESSAGE );
+    	}
     }
 
     /**
@@ -189,7 +278,7 @@ public class InterfazAvion extends JFrame
      */
     public void reqFuncOpcion2( )
     {
-        String respuesta = avion.metodo2( );
+    	String respuesta = avion.metodo2( );
         JOptionPane.showMessageDialog( this, respuesta, "Respuesta", JOptionPane.INFORMATION_MESSAGE );
     }
 

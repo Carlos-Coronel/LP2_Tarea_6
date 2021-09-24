@@ -140,7 +140,7 @@ public class PanelBotonesAvion extends JPanel implements ActionListener
         add( bPorcOcupacion );
 
         //Botones de opciones adicionales
-        botonOpcion1 = new JButton( "Opción 1" );
+        botonOpcion1 = new JButton( "Opciones" );
         botonOpcion1.setActionCommand( OPCION_1 );
         botonOpcion1.addActionListener( this );
         add( botonOpcion1 );
